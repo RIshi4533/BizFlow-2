@@ -1,0 +1,195 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Helper Functions ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isOwner(docData) {
+      return isSignedIn() && request.auth.uid == docData.ownerId;
+    }
+    function isCreatingOwnDoc() {
+      return isSignedIn() && request.resource.data.ownerId == request.auth.uid;
+    }
+    function isSelf(id) {
+      return isSignedIn() && request.auth.uid == id;
+    }
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.role == 'admin';
+    }
+    function isHR() {
+      return isSignedIn() && request.auth.token.role == 'hr';
+    }
+    function isManager() {
+      return isSignedIn() && request.auth.token.role == 'manager';
+    }
+
+    // --- USERS ---
+    match /users/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isSelf(userId) || isAdmin();
+    }
+
+    // --- EMPLOYEES STYLE EVERYWHERE ---
+    match /employees/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /contacts/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /inventory/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /invoicing/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /expenses/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /appointments/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /vehicles/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /leaveRequests/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /leaveBalances/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /jobs/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /rental/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /fleet/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /manufacturing/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /boms/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /deals/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /projects/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /crm/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /sales/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /purchase/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /accounting/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /email_marketing/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /events/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /calendar/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /sign/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /timesheets/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /field_service/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /helpdesk/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+    match /productivity/{id} {
+      allow read: if isOwner(resource.data) || isHR() || isManager() || isAdmin();
+      allow create: if isCreatingOwnDoc() || isHR() || isAdmin();
+      allow update, delete: if isOwner(resource.data) || isHR() || isAdmin();
+    }
+
+    // --- PAYROLL ---
+    match /payroll/{docId} {
+      allow read, write: if isHR() || isAdmin();
+    }
+    match /salaryStructures/{structureId} {
+      allow read: if isSignedIn();
+      allow write: if isHR() || isAdmin();
+    }
+    match /payslips/{docId} {
+      allow read: if isSelf(resource.data.ownerId) || isHR() || isAdmin();
+      allow create, update, delete: if isHR() || isAdmin();
+    }
+
+    // --- DEFAULT DENY ---
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
